@@ -121,7 +121,7 @@ section.band { padding-block: clamp(5rem, 12vw, 9rem); }
 .eyebrow { color: var(--amber); display: block; margin-bottom: 0.9rem; }
 
 /* about: scroll-lit statement */
-.statement { font-family: var(--display); font-weight: 600; font-size: clamp(1.7rem, 3.9vw, 3.1rem); line-height: 1.2; letter-spacing: -0.015em; margin: 0; max-width: 24em; }
+.statement { font-family: var(--display); font-weight: 600; font-size: clamp(1.6rem, 3.4vw, 2.6rem); line-height: 1.2; letter-spacing: -0.015em; margin: 0; max-width: 24em; }
 .statement .w { color: #4d5d7c; transition: color 250ms ease; }
 .statement .w.lit { color: var(--text); }
 .statement .w.hl.lit { color: var(--amber); }
@@ -130,6 +130,16 @@ section.band { padding-block: clamp(5rem, 12vw, 9rem); }
 .stat + .stat { padding-left: 1.25rem; border-left: 1px solid var(--line); }
 .stat b { font-family: var(--display); font-weight: 800; font-size: clamp(2.2rem, 5vw, 3.6rem); line-height: 1; font-variant-numeric: tabular-nums; letter-spacing: -0.03em; }
 .stat span { color: var(--muted); font-size: 0.9rem; }
+
+/* traits */
+.traits { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; margin-top: clamp(2.5rem, 6vw, 4rem); }
+.trait { --mx: 50%; --my: 50%; position: relative; display: grid; gap: 0.6rem; align-content: start; padding: 1.4rem; border: 1px solid var(--line); border-radius: 14px; background: var(--panel); overflow: hidden; transition: border-color 300ms, transform 400ms cubic-bezier(.2,.8,.2,1); }
+.trait::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(260px circle at var(--mx) var(--my), rgba(242,181,68,0.14), transparent 60%); opacity: 0; transition: opacity 300ms; }
+.trait:hover { border-color: var(--ramp-4); transform: translateY(-4px); }
+.trait:hover::before { opacity: 1; }
+.trait .mono { color: var(--ramp-2); font-size: 0.68rem; }
+.trait h3 { font-size: 1.45rem; font-weight: 800; letter-spacing: -0.02em; }
+.trait p { margin: 0; color: #c3cde0; font-size: 0.95rem; }
 
 /* work */
 .work { display: grid; gap: clamp(4rem, 9vw, 7rem); }
@@ -226,12 +236,14 @@ footer .inner { display: flex; flex-wrap: wrap; justify-content: space-between; 
   .split { grid-template-columns: minmax(0, 1fr); }
   .skills { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .traits { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .stat:nth-child(3) { padding-left: 0; border-left: 0; }
   .hint { display: none; }
 }
 @media (max-width: 560px) {
   .timeline li { grid-template-columns: minmax(0, 1fr); gap: 0.25rem; }
   .skills { grid-template-columns: minmax(0, 1fr); }
+  .traits { grid-template-columns: minmax(0, 1fr); }
   .vault { grid-template-columns: minmax(0, 1fr); }
   .lock { display: none; }
   .facts dd { font-size: 1.05rem; }
@@ -291,7 +303,13 @@ footer .inner { display: flex; flex-wrap: wrap; justify-content: space-between; 
   <section class="band" id="about">
     <div class="inner">
       <span class="eyebrow mono">About</span>
-      <p class="statement" id="statement">I'm a final-year Computer Science student majoring in Data Science. I like questions that take several datasets to answer, joining official open data, retail transactions and World Bank indicators, then building the charts, dashboards and databases that make the answer obvious.</p>
+      <p class="statement" id="statement">I'm a final-year Computer Science student majoring in Data Science, and I do my best work when a problem is messy. I break it into smaller questions, find the data that answers each one, and keep going until the answer is clear. I work hard, learn fast and care about the details, from cleaning a dataset to testing the code that runs on it.</p>
+      <div class="traits reveal">
+        <div class="trait"><span class="mono">Committed</span><h3>Hardworking</h3><p>I see work through to the end: cleaning data from seven sources, chasing edge cases, and polishing until it is something people can actually use.</p></div>
+        <div class="trait"><span class="mono">Analytical</span><h3>Problem solver</h3><p>I turn vague questions into ones data can answer, then pick the right tool for each part, whether that is SQL, R or TypeScript.</p></div>
+        <div class="trait"><span class="mono">Design sense</span><h3>Intuitive</h3><p>I have a feel for which numbers matter and what a chart or screen needs so the answer is obvious at a glance.</p></div>
+        <div class="trait"><span class="mono">Adaptable</span><h3>Fast learner</h3><p>I picked up R Shiny, Vega-Lite and RxJS for my projects and shipped working results with each of them.</p></div>
+      </div>
       <div class="stats">
         <div class="stat"><b data-count="3">3</b><span>live projects you can open right now</span></div>
         <div class="stat"><b data-count="12">12</b><span>linked charts in one data story</span></div>
@@ -579,7 +597,7 @@ footer .inner { display: flex; flex-wrap: wrap; justify-content: space-between; 
 
   /* ---------- statement: words light up as they scroll past ---------- */
   const st = document.getElementById("statement");
-  const highlights = ["several", "datasets", "obvious."];
+  const highlights = ["messy.", "clear.", "hard,"];
   st.innerHTML = st.textContent.trim().split(/\s+/).map(w => `<span class="w${highlights.includes(w) ? " hl" : ""}">${w}</span>`).join(" ");
   statementWords.push(...st.querySelectorAll(".w"));
   if (reduce) statementWords.forEach(w => w.classList.add("lit"));
@@ -615,6 +633,12 @@ footer .inner { display: flex; flex-wrap: wrap; justify-content: space-between; 
     });
     f.addEventListener("pointerleave", () => { f.classList.remove("live"); f.style.setProperty("--rx", "0deg"); f.style.setProperty("--ry", "0deg"); });
   });
+
+  /* ---------- spotlight on trait cards ---------- */
+  if (fine && !reduce) document.querySelectorAll(".trait").forEach(c => c.addEventListener("pointermove", e => {
+    const r = c.getBoundingClientRect();
+    c.style.setProperty("--mx", (e.clientX - r.left) + "px"); c.style.setProperty("--my", (e.clientY - r.top) + "px");
+  }));
 
   /* ---------- magnetic buttons ---------- */
   if (fine && !reduce) document.querySelectorAll(".magnetic").forEach(b => {
