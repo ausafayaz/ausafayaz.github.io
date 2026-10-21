@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ausaf Ayaz</title>
+<meta name="description" content="Muhammad Ausaf Ayaz: Computer Science (Data Science) student. Data visualisation, dashboards, SQL and functional TypeScript projects.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a fixed identity column on the left (name, availability, contact) beside a
+   scrolling column of work, read like the index of a data notebook. Stacks on phones. */
+:root {
+  --paper: #f3f5f8;
+  --surface: #ffffff;
+  --ink: #16202e;
+  --muted: #5a6677;
+  --rule: #d6dce5;
+  --accent: #2448a8;      /* chart-ink blue */
+  --accent-soft: #e3e9f8;
+  --mark: #e89a2c;        /* highlighter amber, used once per section at most */
+  --display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --step--1: 0.8125rem;
+  --step-0: 1rem;
+  --step-1: 1.25rem;
+  --step-2: 1.6rem;
+  --step-3: clamp(2.4rem, 5vw, 3.6rem);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0f141c; --surface: #161d28; --ink: #e6ebf2; --muted: #98a3b3; --rule: #273142;
+    --accent: #8fb0ff; --accent-soft: #1c2a4a; --mark: #f0b25a; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0f141c; --surface: #161d28; --ink: #e6ebf2; --muted: #98a3b3; --rule: #273142;
+  --accent: #8fb0ff; --accent-soft: #1c2a4a; --mark: #f0b25a; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 400 var(--step-0)/1.6 var(--body);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-underline-offset: 3px; text-decoration-thickness: 1px; }
+a:hover { text-decoration-thickness: 2px; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
+h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; }
+
+.wrap {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: clamp(2rem, 6vw, 4.5rem);
+  display: grid;
+  grid-template-columns: minmax(0, 300px) minmax(0, 1fr);
+  gap: clamp(2rem, 5vw, 4.5rem);
+}
+
+/* ---------- identity column ---------- */
+.id { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 3rem); align-self: start; display: grid; gap: 1.5rem; }
+.id h1 { font-size: var(--step-3); font-weight: 800; line-height: 0.95; letter-spacing: -0.02em; }
+.id h1 span { display: block; font-size: 0.42em; font-weight: 500; letter-spacing: 0; color: var(--muted); margin-bottom: 0.4em; }
+.role { font-size: var(--step-1); line-height: 1.35; margin: 0; }
+.role b { font-weight: 600; }
+
+.status {
+  display: grid; gap: 0.35rem;
+  border: 1px solid var(--rule); border-radius: 10px; background: var(--surface);
+  padding: 0.9rem 1rem;
+  font-size: var(--step--1);
+}
+.status .live { display: flex; align-items: center; gap: 0.5rem; font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.status .live::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: #22a35a; box-shadow: 0 0 0 3px color-mix(in srgb, #22a35a 25%, transparent); }
+.status p { margin: 0; }
+
+.contact { display: grid; gap: 0.6rem; font-size: var(--step--1); }
+.contact .row { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+.contact .k { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); width: 4.5rem; flex: none; }
+.email { user-select: all; font-family: var(--mono); font-size: 0.85rem; }
+.copy {
+  font: 500 0.72rem var(--mono); letter-spacing: 0.04em; text-transform: uppercase;
+  border: 1px solid var(--rule); background: transparent; color: var(--ink);
+  border-radius: 6px; padding: 0.15rem 0.5rem; cursor: pointer;
+}
+.copy:hover { border-color: var(--accent); color: var(--accent); }
+
+.toc { display: grid; gap: 0.2rem; font-size: var(--step--1); padding: 0; margin: 0; list-style: none; }
+.toc a { color: var(--muted); text-decoration: none; }
+.toc a:hover { color: var(--accent); }
+
+/* ---------- work column ---------- */
+main { display: grid; gap: clamp(3rem, 7vw, 5rem); min-width: 0; }
+section { display: grid; gap: 1.5rem; scroll-margin-top: 2rem; }
+.label {
+  display: flex; align-items: baseline; gap: 0.75rem;
+  font-family: var(--mono); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted);
+  border-bottom: 1px solid var(--rule); padding-bottom: 0.5rem;
+}
+.label b { color: var(--ink); font-weight: 500; }
+
+.intro { font-size: var(--step-1); line-height: 1.5; max-width: 38em; margin: 0; }
+.intro mark { background: linear-gradient(transparent 58%, color-mix(in srgb, var(--mark) 45%, transparent) 58%); color: inherit; padding: 0 0.1em; }
+
+/* project entries */
+.project {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 1.75rem; align-items: start;
+  padding-bottom: 2.5rem; border-bottom: 1px dashed var(--rule);
+}
+.project:last-of-type { border-bottom: 0; padding-bottom: 0; }
+.shot {
+  margin: 0; border-radius: 10px; overflow: hidden; border: 1px solid var(--rule); background: var(--surface);
+  aspect-ratio: 3 / 2; max-width: 100%;
+}
+.shot img { width: 100%; height: 100%; object-fit: cover; object-position: top left; display: block; }
+.shot.wide img { object-position: left top; }
+.pbody { display: grid; gap: 0.85rem; min-width: 0; }
+.kind { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); }
+.project h3 { font-size: var(--step-2); font-weight: 700; line-height: 1.1; letter-spacing: -0.01em; }
+.pbody p { margin: 0; color: var(--ink); max-width: 36em; }
+.facts {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; margin: 0;
+  border: 1px solid var(--rule); border-radius: 8px; overflow: hidden; background: var(--surface);
+}
+.facts div { padding: 0.55rem 0.7rem; border-left: 1px solid var(--rule); }
+.facts div:first-child { border-left: 0; }
+.facts dt { font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.facts dd { margin: 0; font-family: var(--display); font-weight: 700; font-size: 1.15rem; font-variant-numeric: tabular-nums; line-height: 1.3; }
+.stack { display: flex; flex-wrap: wrap; gap: 0.35rem; padding: 0; margin: 0; list-style: none; }
+.stack li { font-family: var(--mono); font-size: 0.74rem; background: var(--accent-soft); color: var(--ink); border-radius: 4px; padding: 0.1rem 0.45rem; }
+.links { display: flex; flex-wrap: wrap; gap: 1.1rem; font-weight: 500; font-size: var(--step--1); }
+.links a::after { content: " ↗"; }
+
+.private {
+  display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 1rem; align-items: start;
+  background: var(--surface); border: 1px solid var(--rule); border-radius: 10px; padding: 1.1rem 1.2rem;
+}
+.private .lock { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--rule); border-radius: 4px; padding: 0.1rem 0.4rem; }
+.private h3 { font-size: var(--step-1); font-weight: 700; margin-bottom: 0.3rem; }
+.private p { margin: 0 0 0.6rem; font-size: 0.95rem; }
+
+/* experience / education timeline */
+.entries { display: grid; gap: 1.4rem; margin: 0; padding: 0; list-style: none; }
+.entry { display: grid; grid-template-columns: 9.5rem minmax(0, 1fr); gap: 1rem; }
+.when { font-family: var(--mono); font-size: 0.8rem; color: var(--muted); font-variant-numeric: tabular-nums; padding-top: 0.2rem; }
+.entry h3 { font-family: var(--body); font-size: 1.05rem; font-weight: 600; }
+.entry .where { color: var(--muted); font-size: 0.95rem; }
+.entry ul { margin: 0.4rem 0 0; padding-left: 1.1rem; display: grid; gap: 0.2rem; font-size: 0.95rem; }
+
+/* skills */
+.skills { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem 2rem; margin: 0; }
+.skills dt { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.25rem; }
+.skills dd { margin: 0; }
+
+footer { font-size: var(--step--1); color: var(--muted); border-top: 1px solid var(--rule); padding-top: 1rem; }
+
+@media (max-width: 860px) {
+  .wrap { grid-template-columns: minmax(0, 1fr); }
+  .id { position: static; }
+  .toc { display: none; }
+  .project { grid-template-columns: minmax(0, 1fr); gap: 1.1rem; }
+}
+@media (max-width: 520px) {
+  .entry { grid-template-columns: minmax(0, 1fr); gap: 0.2rem; }
+  .skills { grid-template-columns: minmax(0, 1fr); }
+  .facts dd { font-size: 1rem; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .shot img { transition: transform 400ms ease; }
+  .project:hover .shot img { transform: scale(1.02); }
+}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <aside class="id">
+    <h1><span>Muhammad</span>Ausaf Ayaz</h1>
+    <p class="role">Computer Science <b>(Data Science)</b> student at Monash University Malaysia. I build data stories, dashboards and databases.</p>
+
+    <div class="status" aria-label="Availability">
+      <span class="live">Open to internships</span>
+      <p><b>12 weeks, on-site in Karachi</b></p>
+      <p>Dec 2026 – Feb 2027 · IT, software or data roles</p>
+    </div>
+
+    <div class="contact">
+      <div class="row"><span class="k">Email</span><span class="email" id="email">ausafayaz2@gmail.com</span><button class="copy" id="copy-email" type="button">Copy</button></div>
+      <div class="row"><span class="k">GitHub</span><a href="https://github.com/ausafayaz" target="_blank" rel="noopener">github.com/ausafayaz</a></div>
+      <div class="row"><span class="k">CV</span><a href="Muhammad_Ausaf_Ayaz_CV.pdf" target="_blank" rel="noopener">Download PDF</a></div>
+      <div class="row"><span class="k">Based</span><span>Karachi · Kuala Lumpur</span></div>
+    </div>
+
+    <ul class="toc" aria-label="Sections">
+      <li><a href="#work">Selected work</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#education">Education</a></li>
+      <li><a href="#skills">Skills</a></li>
+    </ul>
+  </aside>
+
+  <main>
+    <section aria-label="About">
+      <p class="intro">I like questions that need several datasets to answer. My projects join <mark>official open data</mark>, retail transactions and World Bank indicators, then turn them into charts and tools people can explore. I also build the plumbing underneath: relational schemas, SQL reports and well-tested TypeScript.</p>
+    </section>
+
+    <section id="work">
+      <div class="label"><b>Selected work</b><span>4 projects</span></div>
+
+      <article class="project">
+        <figure class="shot"><img src="img/malaysia.jpg" alt="Choropleth map of state unemployment rates across Malaysia, Q3 2025"></figure>
+        <div class="pbody">
+          <span class="kind">Interactive data story</span>
+          <h3>Young Malaysia Under Pressure</h3>
+          <p>How job pressure, living costs and household spending combine differently across Malaysian states. Six questions, each answered with its own charts, ending in a composite state pressure index built from normalised unemployment, CPI change and spending-to-income ratio.</p>
+          <dl class="facts">
+            <div><dt>Charts</dt><dd>12</dd></div>
+            <div><dt>Datasets</dt><dd>7</dd></div>
+            <div><dt>States &amp; FTs</dt><dd>15</dd></div>
+          </dl>
+          <ul class="stack"><li>data.gov.my</li><li>Vega-Lite</li><li>JavaScript</li><li>HTML/CSS</li><li>GeoJSON</li></ul>
+          <div class="links">
+            <a href="https://ausafayaz.github.io/young_malaysia_under_pressure/" target="_blank" rel="noopener">View live site</a>
+            <a href="https://github.com/ausafayaz/young_malaysia_under_pressure" target="_blank" rel="noopener">Source</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="project">
+        <figure class="shot wide"><img src="img/dashboard.jpg" alt="R Shiny dashboard with KPI tiles for sales, profit, margin and shipping cost above a profit-margin trend chart"></figure>
+        <div class="pbody">
+          <span class="kind">Business dashboard</span>
+          <h3>APAC Superstore Profitability</h3>
+          <p>Does high sales volume in Asia-Pacific actually mean profit? This R Shiny dashboard joins four years of retail orders with World Bank population, inflation and GDP data. It shows that loss-making orders climb sharply with discount level, and that Furniture sells well but earns the thinnest margins.</p>
+          <dl class="facts">
+            <div><dt>Sales</dt><dd>$3.59M</dd></div>
+            <div><dt>Margin</dt><dd>12.2%</dd></div>
+            <div><dt>Years</dt><dd>2011–14</dd></div>
+          </dl>
+          <ul class="stack"><li>R</li><li>Shiny</li><li>tidyverse</li><li>plotly</li></ul>
+          <div class="links">
+            <a href="https://github.com/ausafayaz/apac-superstore-dashboard" target="_blank" rel="noopener">Source &amp; screenshots</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="project">
+        <figure class="shot"><img src="img/flappy.jpg" alt="Flappy Birb game: a yellow bird flying between green pipes, with a gold power-up orb"></figure>
+        <div class="pbody">
+          <span class="kind">Browser game</span>
+          <h3>Flappy Birb</h3>
+          <p>A Flappy Bird–style game written in a purely functional reactive style. Every key press and timer becomes a pure function from one immutable state to the next, folded into a single RxJS stream. It has physics, CSV-driven levels, power-ups and ghost replays of your earlier runs.</p>
+          <dl class="facts">
+            <div><dt>Unit tests</dt><dd>13</dd></div>
+            <div><dt>Frame</dt><dd>16 ms</dd></div>
+            <div><dt>Deploy</dt><dd>Actions</dd></div>
+          </dl>
+          <ul class="stack"><li>TypeScript</li><li>RxJS</li><li>Vite</li><li>Vitest</li></ul>
+          <div class="links">
+            <a href="https://ausafayaz.github.io/flappy-birb-frp/" target="_blank" rel="noopener">Play it</a>
+            <a href="https://github.com/ausafayaz/flappy-birb-frp" target="_blank" rel="noopener">Source</a>
+          </div>
+        </div>
+      </article>
+
+      <div class="private">
+        <span class="lock">Private</span>
+        <div>
+          <h3>Truck Hire Database</h3>
+          <p>Oracle schema for a truck-and-trailer hire business, from quote to scheduled job: composite and self-referencing keys, transactions, schema migrations with back-fill, utilisation reports and a JSON export loaded into MongoDB.</p>
+          <ul class="stack"><li>Oracle SQL</li><li>MongoDB</li></ul>
+        </div>
+      </div>
+      <p style="margin:0;font-size:var(--step--1);color:var(--muted)">Code for the database project is available on request.</p>
+    </section>
+
+    <section id="experience">
+      <div class="label"><b>Experience</b></div>
+      <ul class="entries">
+        <li class="entry">
+          <span class="when">Jun – Jul 2022</span>
+          <div>
+            <h3>IT &amp; Digital Operations Intern</h3>
+            <span class="where">Reet Solutions · Karachi</span>
+            <ul>
+              <li>Supported digital and social media campaigns for company and client accounts</li>
+              <li>Scheduled posts, kept website content up to date and tracked engagement metrics</li>
+              <li>Helped with day-to-day IT tasks and organising digital assets</li>
+            </ul>
+          </div>
+        </li>
+        <li class="entry">
+          <span class="when">Ongoing</span>
+          <div>
+            <h3>Organiser &amp; Volunteer</h3>
+            <span class="where">Student clubs and campus events · Monash University Malaysia</span>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <section id="education">
+      <div class="label"><b>Education</b></div>
+      <ul class="entries">
+        <li class="entry">
+          <span class="when">Year 3 · current</span>
+          <div>
+            <h3>Bachelor of Computer Science (Data Science)</h3>
+            <span class="where">Monash University Malaysia · Selangor</span>
+            <ul><li>Data Structures &amp; Algorithms, Database Systems, Database Modelling and Management, Foundations of Data Analysis</li></ul>
+          </div>
+        </li>
+        <li class="entry">
+          <span class="when">2021 – 2023</span>
+          <div>
+            <h3>A Levels</h3>
+            <span class="where">Karachi Grammar School</span>
+            <ul><li>A* Mathematics, A Physics, A English General Paper, B Computer Science, B Chemistry</li></ul>
+          </div>
+        </li>
+        <li class="entry">
+          <span class="when">2019 – 2021</span>
+          <div>
+            <h3>O Levels</h3>
+            <span class="where">Saint Michael's Convent School</span>
+            <ul><li>8 A* and 1 A</li></ul>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <section id="skills">
+      <div class="label"><b>Skills</b></div>
+      <dl class="skills">
+        <div><dt>Languages</dt><dd>Python, R, SQL, TypeScript, JavaScript, Java, HTML, CSS</dd></div>
+        <div><dt>Data</dt><dd>Pandas, NumPy, Matplotlib, tidyverse, plotly, Vega-Lite, data cleaning, statistical analysis</dd></div>
+        <div><dt>Databases</dt><dd>Relational design, normalisation, Oracle SQL, MongoDB</dd></div>
+        <div><dt>Engineering</dt><dd>R Shiny, RxJS, Vite, Vitest, Git/GitHub, GitHub Actions</dd></div>
+      </dl>
+    </section>
+
+    <footer>Muhammad Ausaf Ayaz · Last updated October 2026</footer>
+  </main>
+</div>
+
+<script>
+  document.getElementById("copy-email").addEventListener("click", async (e) => {
+    const btn = e.currentTarget;
+    const text = document.getElementById("email").textContent;
+    try {
+      await navigator.clipboard.writeText(text);
+      btn.textContent = "Copied";
+    } catch {
+      const r = document.createRange();
+      r.selectNodeContents(document.getElementById("email"));
+      const s = getSelection(); s.removeAllRanges(); s.addRange(r);
+      btn.textContent = "Selected";
+    }
+    setTimeout(() => (btn.textContent = "Copy"), 1600);
+  });
+</script>
+
+</body>
+</html>
