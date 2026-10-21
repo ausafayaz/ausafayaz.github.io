@@ -510,14 +510,16 @@ footer .inner { display: flex; flex-wrap: wrap; justify-content: space-between; 
 
   function build() {
     const r = canvas.getBoundingClientRect();
-    W = r.width; H = r.height; dpr = Math.min(devicePixelRatio || 1, 2);
-    canvas.width = W * dpr; canvas.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    W = Math.max(1, Math.floor(r.width)); H = Math.max(1, Math.floor(r.height)); dpr = Math.min(devicePixelRatio || 1, 2);
+    canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr); ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     // Lay the name out where the HTML title sits, so the particles replace it exactly.
     const tr = title.getBoundingClientRect(), hr = canvas.getBoundingClientRect();
     const off = document.createElement("canvas"); off.width = W; off.height = H;
     const o = off.getContext("2d");
     const cs = getComputedStyle(title);
-    const size = parseFloat(cs.fontSize), lh = parseFloat(cs.lineHeight) || size * 0.88;
+    const size = parseFloat(cs.fontSize);
+    const lhRaw = parseFloat(cs.lineHeight);
+    const lh = Number.isFinite(lhRaw) && lhRaw > size * 0.5 ? lhRaw : size * 0.88; // Safari can report "normal"
     o.font = `800 ${size}px "Bricolage Grotesque", sans-serif`;
     o.textBaseline = "alphabetic"; o.fillStyle = "#fff";
     const x0 = tr.left - hr.left, y0 = tr.top - hr.top;
@@ -526,10 +528,11 @@ footer .inner { display: flex; flex-wrap: wrap; justify-content: space-between; 
     if (oneLine) o.fillText("Ausaf Ayaz", x0, y0 + lh * 0.82);
     else words.forEach((w, i) => o.fillText(w, x0, y0 + lh * (0.82 + i)));
     const gap = W < 600 ? 3 : 5;
-    const data = o.getImageData(0, 0, W, H).data;
+    const OW = off.width, OH = off.height; // whole pixels, so row lookups line up
+    const data = o.getImageData(0, 0, OW, OH).data;
     parts = [];
-    for (let y = 0; y < H; y += gap) for (let x = 0; x < W; x += gap) {
-      if (data[(y * W + x) * 4 + 3] > 128) {
+    for (let y = 0; y < OH; y += gap) for (let x = 0; x < OW; x += gap) {
+      if (data[(y * OW + x) * 4 + 3] > 128) {
         const second = !oneLine && y > y0 + lh * 0.95;
         const t = x / W;
         parts.push({
@@ -543,8 +546,12 @@ footer .inner { display: flex; flex-wrap: wrap; justify-content: space-between; 
     }
     // a light sprinkle of ambient "noise" points that drift
     for (let i = 0; i < Math.min(220, W / 5); i++) parts.push({ ambient: true, x: Math.random() * W, y: Math.random() * H, vx: (Math.random() - 0.5) * 0.15, vy: (Math.random() - 0.5) * 0.15, c: "#4f82e3", s: 1 });
-    title.classList.add("sr-only");
     if (reduce) parts.forEach(p => { if (!p.ambient) { p.x = p.hx; p.y = p.hy; } });
+    const letters = parts.filter(p => !p.ambient).length;
+    canvas.dataset.points = String(letters);
+    // Only swap the real heading for particles if the particles actually exist.
+    title.classList.toggle("sr-only", letters > 150);
+    if (letters <= 150) parts = parts.filter(p => p.ambient);
   }
 
   function step() {
@@ -569,10 +576,20 @@ footer .inner { display: flex; flex-wrap: wrap; justify-content: space-between; 
 
   function drawStatic() { ctx.clearRect(0, 0, W, H); for (const p of parts) { ctx.globalAlpha = p.ambient ? 0.35 : 1; ctx.fillStyle = p.c; ctx.fillRect(p.x, p.y, p.s, p.s); } }
 
-  document.fonts.load('800 80px "Bricolage Grotesque"').catch(() => {}).then(() => {
-    try { build(); reduce ? drawStatic() : start(); } catch (e) { title.classList.remove("sr-only"); }
-  });
-  let rt; addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(() => { title.classList.remove("sr-only"); build(); if (reduce) drawStatic(); }, 150); });
+  function boot() {
+    try { build(); reduce ? drawStatic() : start(); }
+    catch (e) { title.classList.remove("sr-only"); parts = []; }
+  }
+  // Wait briefly for the display font, but never block on it: some Safari versions
+  // are slow (or never settle) when loading subset web fonts.
+  const fontReady = document.fonts && document.fonts.load
+    ? document.fonts.load('800 80px "Bricolage Grotesque"').catch(() => {})
+    : Promise.resolve();
+  let booted = false;
+  Promise.race([fontReady, new Promise(r => setTimeout(r, 1200))]).then(() => { booted = true; boot(); });
+  // When the real font does arrive, rebuild so the particles match its shapes.
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { if (booted) { title.classList.remove("sr-only"); boot(); } });
+  let rt; addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(() => { title.classList.remove("sr-only"); boot(); }, 150); });
   const hero = canvas.parentElement;
   hero.addEventListener("pointermove", e => { const r = canvas.getBoundingClientRect(); mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top; });
   hero.addEventListener("pointerleave", () => { mouse.x = mouse.y = -9999; });
