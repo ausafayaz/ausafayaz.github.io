@@ -4,8 +4,23 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0a1120">
+<link rel="canonical" href="https://ausafayaz.github.io/">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ausafayaz.github.io/">
+<meta property="og:title" content="Ausaf Ayaz · Data Science portfolio">
+<meta property="og:description" content="Final-year Computer Science (Data Science) student. Data stories, dashboards and databases built from messy, real-world data.">
+<meta property="og:image" content="https://ausafayaz.github.io/img/og-card.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Ausaf Ayaz written in data points, with the tagline Data stories, dashboards and databases built from messy, real-world data">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Ausaf Ayaz · Data Science portfolio">
+<meta name="twitter:description" content="Final-year Computer Science (Data Science) student. Data stories, dashboards and databases built from messy, real-world data.">
+<meta name="twitter:image" content="https://ausafayaz.github.io/img/og-card.jpg">
 <title>Ausaf Ayaz</title>
-<meta name="description" content="Muhammad Ausaf Ayaz: Computer Science (Data Science) student. Data stories, dashboards, databases and functional TypeScript.">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%230a1120%22%3E%3C/rect%3E%3Ctext%20x%3D%229%22%20y%3D%2244%22%20font-family%3D%22Inter%22%20font-weight%3D%22800%22%20font-size%3D%2230%22%20fill%3D%22%23e8eef8%22%20letter-spacing%3D%22-1%22%3EAA%3C/text%3E%3Ccircle%20cx%3D%2252%22%20cy%3D%2241%22%20r%3D%224%22%20fill%3D%22%23f2b544%22%3E%3C/circle%3E%3C/svg%3E">
+<meta name="description" content="Final-year Computer Science (Data Science) student. Data stories, dashboards and databases built from messy, real-world data.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
@@ -240,6 +255,9 @@ footer .inner { display: flex; flex-wrap: wrap; justify-content: space-between; 
   .stat:nth-child(3) { padding-left: 0; border-left: 0; }
   .hint { display: none; }
 }
+@media (max-width: 900px) and (pointer: coarse) {
+  .hint { display: block; top: calc(76px + env(safe-area-inset-top, 0px)); }
+}
 @media (max-width: 560px) {
   .timeline li { grid-template-columns: minmax(0, 1fr); gap: 0.25rem; }
   .skills { grid-template-columns: minmax(0, 1fr); }
@@ -305,7 +323,7 @@ footer .inner { display: flex; flex-wrap: wrap; justify-content: space-between; 
       <span class="eyebrow mono">About</span>
       <p class="statement" id="statement">I'm a final-year Computer Science student majoring in Data Science, and I do my best work when a problem is messy. I break it into smaller questions, find the data that answers each one, and keep going until the answer is clear. I work hard, learn fast and care about the details, from cleaning a dataset to testing the code that runs on it.</p>
       <div class="traits reveal">
-        <div class="trait"><span class="mono">Committed</span><h3>Hardworking</h3><p>I see work through to the end: cleaning data from seven sources, chasing edge cases, and polishing until it is something people can actually use.</p></div>
+        <div class="trait"><span class="mono">Committed</span><h3>Hardworking</h3><p>I see work through to the end: joining and cleaning official datasets, chasing edge cases, and polishing until it is something people can actually use.</p></div>
         <div class="trait"><span class="mono">Analytical</span><h3>Problem solver</h3><p>I turn vague questions into ones data can answer, then pick the right tool for each part, whether that is SQL, R or TypeScript.</p></div>
         <div class="trait"><span class="mono">Design sense</span><h3>Intuitive</h3><p>I have a feel for which numbers matter and what a chart or screen needs so the answer is obvious at a glance.</p></div>
         <div class="trait"><span class="mono">Adaptable</span><h3>Fast learner</h3><p>I picked up R Shiny, Vega-Lite and RxJS for my projects and shipped working results with each of them.</p></div>
@@ -313,7 +331,7 @@ footer .inner { display: flex; flex-wrap: wrap; justify-content: space-between; 
       <div class="stats">
         <div class="stat"><b data-count="3">3</b><span>live projects you can open right now</span></div>
         <div class="stat"><b data-count="12">12</b><span>linked charts in one data story</span></div>
-        <div class="stat"><b data-count="7">7</b><span>public datasets joined and cleaned</span></div>
+        <div class="stat"><b data-count="4">4</b><span>official datasets joined and cleaned</span></div>
         <div class="stat"><b data-count="18">18</b><span>unit tests guarding a game engine</span></div>
       </div>
     </div>
@@ -334,7 +352,7 @@ footer .inner { display: flex; flex-wrap: wrap; justify-content: space-between; 
             <p>How job pressure, living costs and household spending combine differently across Malaysian states. Six questions, each answered with its own charts, ending in a composite state pressure index built from normalised unemployment, CPI change and spending-to-income ratio.</p>
             <dl class="facts">
               <div><dt>Charts</dt><dd>12</dd></div>
-              <div><dt>Datasets</dt><dd>7</dd></div>
+              <div><dt>Datasets</dt><dd>4</dd></div>
               <div><dt>Regions</dt><dd>15</dd></div>
             </dl>
             <ul class="chips"><li>Vega-Lite</li><li>JavaScript</li><li>GeoJSON</li><li>data.gov.my</li></ul>
@@ -499,6 +517,7 @@ footer .inner { display: flex; flex-wrap: wrap; justify-content: space-between; 
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const fine = matchMedia("(pointer: fine)").matches;
   document.documentElement.classList.add("js");
+  if (!fine) { const h = document.querySelector(".hint"); if (h) h.textContent = "Tap the name"; }
 
   /* ---------- particle name ---------- */
   const canvas = document.getElementById("field");
@@ -592,7 +611,14 @@ footer .inner { display: flex; flex-wrap: wrap; justify-content: space-between; 
   let rt; addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(() => { title.classList.remove("sr-only"); boot(); }, 150); });
   const hero = canvas.parentElement;
   hero.addEventListener("pointermove", e => { const r = canvas.getBoundingClientRect(); mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top; });
-  hero.addEventListener("pointerleave", () => { mouse.x = mouse.y = -9999; });
+  hero.addEventListener("pointerleave", e => { if (e.pointerType === "mouse") mouse.x = mouse.y = -9999; }); // touch lifts fire this instantly
+  // Touch screens have no hover: a tap scatters the points, which then settle again.
+  let tapTimer;
+  hero.addEventListener("pointerdown", e => {
+    if (e.pointerType === "mouse") return;
+    const r = canvas.getBoundingClientRect(); mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top;
+    clearTimeout(tapTimer); tapTimer = setTimeout(() => { mouse.x = mouse.y = -9999; }, 350);
+  });
   new IntersectionObserver(([e]) => { visible = e.isIntersecting; if (visible) start(); else running = false; }).observe(hero);
 
   /* ---------- nav, progress ---------- */
